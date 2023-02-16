@@ -1,5 +1,6 @@
 py -3 -m venv .venv
 .venv\scripts\activate
 django-admin startproject CBM
+python manage.py startapp map
 
 
