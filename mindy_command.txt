@@ -8,5 +8,8 @@ django-admin startproject CBM
 python manage.py startapp map
 pip install psycopg2
 python manage.py migrate
+python manage.py makemigrations map
+python manage.py sqlmigrate map 0001
+
 
 
