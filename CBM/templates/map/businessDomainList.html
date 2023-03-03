@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+    {% for bd in bdlist %}
+    <div class="col-lg-4" >
+        <div class="card" style="width: 18rem;">           
+            <div class="card-body">
+                <h5 class="card-title">{{ bd.bd_no }} {{ bd.bd_name }}</h5>
+                <a class="btn btn-primary" href="/map/valuechain?bdno={{ bd.bd_no }}">內容</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>    
+{% endblock  %}
+

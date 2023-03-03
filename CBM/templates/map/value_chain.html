@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+    {% for selectedVC in selectedVCList %}
+    <div class="col-lg-4">
+        <div class="card" style="width: 18rem;">           
+            <div class="card-body">
+                <h5 class="card-title">{{ selectedVC.bd_no }} {{selectedVC.vc_name}}</h5>                
+                <!--<p class="card-text"></p>-->
+                <a class="btn btn-primary" href="/map/processMap?vcno={{ selectedVC.vc_no }}">內容</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock  %}

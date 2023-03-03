@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="padding-top:3%">
+    <div class="container " >
+        <div class="row">
+            <div class="col" >
+                {{pcMap|dict_get:"M6_1_1"}}                
+                <div class="container">
+                    {%for cp in cbmMap|dict_get:"M6_1_1" %}    
+                    <div class="row border border-secondary" style="padding:3%">
+                        <div class="col-2 border border-secondary">
+                            {{cp.cb_type}}
+                        </div>
+                        <div class="col-8 border border-secondary">
+                            {{cp.cb_name}}
+                        </div> 
+                        <div class="col-2 border border-secondary">
+                            <a ref="#" onClick="showActivity('{{cp.cb_no}}');">view</a>
+                        </div>  
+                    </div>
+                    {% endfor%}
+                </div>  
+            </div>   
+            <div class="col" >
+                {{pcMap|dict_get:"M6_1_2"}}
+                <div class="container">
+                    {%for cp in cbmMap|dict_get:"M6_1_2" %}    
+                    <div class="row border border-secondary" style="padding:3%">
+                        <div class="col-2 border border-secondary">
+                            {{cp.cb_type}}
+                        </div>
+                        <div class="col-10 border border-secondary">
+                            {{cp.cb_name}}
+                        </div>   
+                    </div>
+                    {% endfor%}
+                </div>  
+            </div>
+            <div class="col">
+                {{pcMap|dict_get:"M6_1_3"}}
+                <div class="container">
+                    {%for cp in cbmMap|dict_get:"M6_1_3" %}    
+                    <div class="row border border-secondary" style="padding:3%">
+                        <div class="col-2 border border-secondary">
+                            {{cp.cb_type}}
+                        </div>
+                        <div class="col-10 border border-secondary">
+                            {{cp.cb_name}}
+                        </div>   
+                    </div>
+                    {% endfor%}
+                </div>  
+            </div>
+        </div>   
+    </div>    
+</div> 
+</div> 
+<!--Modal-->
+<div class="modal" tabindex="-1" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Modal body text goes here.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Script-->  
+  <script>
+    function showActivity(cbno) {
+        $(function () {
+            $.ajaxSetup({
+                headers: { "X-CSRFToken": getCookie("csrftoken") }
+            });
+        });
+
+        function getCookie(c_name)
+        {
+                if (document.cookie.length > 0){
+                    c_start = document.cookie.indexOf(c_name + "=");
+                    if (c_start != -1){
+                        c_start = c_start + c_name.length + 1;
+                        c_end = document.cookie.indexOf(";", c_start);
+                        if (c_end == -1) c_end = document.cookie.length;
+                            return unescape(document.cookie.substring(c_start,c_end));
+                        }
+                }
+            return "";
+        }
+
+        $.ajax({
+            type:'POST',
+            url:'/map/getActivities/', 
+            contentType: 'application/json',
+            data: {
+                content: cbno,
+            },
+            success : function(response){
+                bdlist = response.bdlist;
+                $.each(JSON.parse(bdlist) , function( index, data ) {
+                    alert(data.fields.bd_name);
+                  });
+                $('#myModal').modal('show');
+            }
+        });        
+    };
+  </script>     
+  {% endblock  %}
+
+  
