@@ -1,52 +1,69 @@
 {% extends 'base.html' %}
 {% block content %}
 <div style="padding-top:3%">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/map/businessDomainList">Business Domain</a>
+            </li>
+            <li class="breadcrumb-item" aria-current="page">
+                <a href="/map/valuechain?bdno={{selectedVCNo}}">Value Chain</a>
+            </li>
+        </ol>
+    </nav>
+
     <div class="container " >
         <div class="row">
             <div class="col" >
-                {{pcMap|dict_get:"M6_1_1"}}                
+                {{pcMap|dict_get:"60101"}}                
                 <div class="container">
-                    {%for cp in cbmMap|dict_get:"M6_1_1" %}    
+                    {%for cp in cbmMap|dict_get:"60101"%}    
                     <div class="row border border-secondary" style="padding:3%">
-                        <div class="col-2 border border-secondary">
+                        <div class="col-3 border border-secondary">
                             {{cp.cb_type}}
                         </div>
-                        <div class="col-8 border border-secondary">
+                        <div class="col-7 border border-secondary">
                             {{cp.cb_name}}
                         </div> 
                         <div class="col-2 border border-secondary">
-                            <a ref="#" onClick="showActivity('{{cp.cb_no}}');">view</a>
+                            <span class="badge bg-secondary" onClick="showActivity('{{cp.cb_no}}');" style="cursor:pointer;">view</span>
                         </div>  
                     </div>
                     {% endfor%}
                 </div>  
             </div>   
             <div class="col" >
-                {{pcMap|dict_get:"M6_1_2"}}
+                {{pcMap|dict_get:"60102"}}
                 <div class="container">
-                    {%for cp in cbmMap|dict_get:"M6_1_2" %}    
+                    {%for cp in cbmMap|dict_get:"60102" %}    
                     <div class="row border border-secondary" style="padding:3%">
-                        <div class="col-2 border border-secondary">
+                        <div class="col-3 border border-secondary">
                             {{cp.cb_type}}
                         </div>
-                        <div class="col-10 border border-secondary">
+                        <div class="col-7 border border-secondary">
                             {{cp.cb_name}}
+                        </div>  
+                        <div class="col-2 border border-secondary">
+                            <span class="badge bg-secondary" onClick="showActivity('{{cp.cb_no}}');" style="cursor:pointer;">view</span>
                         </div>   
                     </div>
                     {% endfor%}
                 </div>  
             </div>
             <div class="col">
-                {{pcMap|dict_get:"M6_1_3"}}
+                {{pcMap|dict_get:"60103"}}
                 <div class="container">
-                    {%for cp in cbmMap|dict_get:"M6_1_3" %}    
+                    {%for cp in cbmMap|dict_get:"60103" %}    
                     <div class="row border border-secondary" style="padding:3%">
-                        <div class="col-2 border border-secondary">
+                        <div class="col-3 border border-secondary">
                             {{cp.cb_type}}
                         </div>
-                        <div class="col-10 border border-secondary">
+                        <div class="col-7 border border-secondary">
                             {{cp.cb_name}}
-                        </div>   
+                        </div>    
+                        <div class="col-2 border border-secondary">
+                            <span class="badge bg-secondary" onClick="showActivity('{{cp.cb_no}}');" style="cursor:pointer;">view</span>
+                        </div> 
                     </div>
                     {% endfor%}
                 </div>  
@@ -64,7 +81,8 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p>Modal body text goes here.</p>
+          <div class="container" id="activityDetail">
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -76,6 +94,8 @@
   <!--Script-->  
   <script>
     function showActivity(cbno) {
+        var activityContainer = $('#activityDetail'); 
+        activityContainer.empty();
         $(function () {
             $.ajaxSetup({
                 headers: { "X-CSRFToken": getCookie("csrftoken") }
@@ -96,18 +116,20 @@
             return "";
         }
 
+               
         $.ajax({
             type:'POST',
-            url:'/map/getActivities/', 
-            contentType: 'application/json',
+            url:'/map/getActivities/',             
             data: {
-                content: cbno,
+                selectedCbno: cbno,
             },
-            success : function(response){
-                bdlist = response.bdlist;
+            success : function(response){                
+                activityContainer.append('<div class="row"><div class="col">No</div><div class="col">活動名稱</div></div>');
+                bdlist = response.bdlist;          
                 $.each(JSON.parse(bdlist) , function( index, data ) {
-                    alert(data.fields.bd_name);
-                  });
+                     var rowVal = index+1
+                    activityContainer.append('<div class="row"><div class="col-2">'+rowVal+'</div><div class="col-8">'+data.fields.ca_name+'</div></div>'); 
+                });
                 $('#myModal').modal('show');
             }
         });        

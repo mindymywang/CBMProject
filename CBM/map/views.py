@@ -7,6 +7,7 @@ from .models import Business_Domain
 from .models import Value_Chain
 from .models import Process_Chain
 from .models import Component_Business
+from .models import Component_Activity
 import json
 
 
@@ -38,9 +39,8 @@ def dict_get(value, key):
     return value.get(key, '') 
 
 def processMap(request):
-     selectedVCNo = request.GET.get('vcno')
-     selectedPCResult =  Process_Chain.objects.filter(vc_no=selectedVCNo)
-
+     selectedPCNo = request.GET.get('vcno')
+     selectedPCResult =  Process_Chain.objects.filter(vc_no=selectedPCNo)
      cbmMap = {}
      pcMap = {}
      for selectedPC in selectedPCResult :
@@ -50,14 +50,16 @@ def processMap(request):
          cbmMap[selectedPCNo] = selectCBList
          pcMap[selectedPCNo] = selectedPCName
 
-     selectedPCList = {"selectedPCList":selectedPCResult, "cbmMap" : cbmMap, "pcMap" : pcMap}
+     selectedPCList = {"selectedPCList":selectedPCResult, "cbmMap" : cbmMap, "pcMap" : pcMap, "selectedVCNo" :selectedPCNo}
      return render(request, "map/processMap.html",context=selectedPCList)
 
 @csrf_exempt
 def getActivities(request):
     #bdall = Business_Domain.objects.all()
+    
+    selectedCbno = request.POST.get('selectedCbno')
     response_data = {}
-    response_data['bdlist'] = serializers.serialize("json",Business_Domain.objects.all())
+    response_data['bdlist'] = serializers.serialize("json",Component_Activity.objects.filter(cb_no=selectedCbno))
     return HttpResponse(json.dumps(response_data),content_type="application/json")
 
 

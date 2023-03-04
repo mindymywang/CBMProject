@@ -30,3 +30,13 @@ class Component_Business(models.Model):
     pc_no = models.CharField(max_length=50, default=None, null=True)
     bd_no = models.CharField(max_length=20, default=None, null=True)
     vc_no = models.CharField(max_length=50, default=None, null=True)
+
+class Component_Activity(models.Model):
+    ca_no = models.BigIntegerField(primary_key=True)
+    ca_name = models.CharField(max_length=100, default=None, null=True)
+    ca_eng_name = models.CharField(max_length=100, default=None, null=True)
+    cb_no = models.BigIntegerField(default=None, null=True)
+    pc_no = models.CharField(max_length=50, default=None, null=True)
+    bd_no = models.CharField(max_length=20, default=None, null=True)
+    vc_no = models.CharField(max_length=50, default=None, null=True)
+
