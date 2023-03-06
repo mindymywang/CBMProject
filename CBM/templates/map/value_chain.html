@@ -1,13 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="/map/businessDomainList">M1~M8列表</a>
+        </li>
+        <li class="breadcrumb-item">M{{selectBD.bd_no}}{{selectBD.bd_name}}</li>
+    </ol>
+</nav>
 <div class="row">
     {% for selectedVC in selectedVCList %}
-    <div class="col-lg-4">
+    <div class="col-lg-4" style="padding-bottom:1%">
         <div class="card" style="width: 18rem;">           
             <div class="card-body">
-                <h5 class="card-title">{{ selectedVC.bd_no }} {{selectedVC.vc_name}}</h5>                
-                <!--<p class="card-text"></p>-->
-                <a class="btn btn-primary" href="/map/processMap?vcno={{ selectedVC.vc_no }}">內容</a>
+                <h5 class="card-title">{{selectedVC.vc_name}}</h5> 
+                <a class="btn btn-primary" href="/map/processMap?vcno={{ selectedVC.vc_no }}">view</a>
             </div>
         </div>
     </div>
