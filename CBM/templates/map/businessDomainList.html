@@ -6,44 +6,53 @@
     <div class="col-lg-12" style="padding-bottom:1%">
         <div class="card" style="width: 100%">           
             <div class="card-body">
-                <h5 class="card-title">{{ bd.bd_no }} {{ bd.bd_name }}</h5>
-                <div class="container">
-                    {%for vc in vcMap|dict_get:bd.bd_no%}
+                <div class="card-title">
+                    <div class="row">
+                        <div class="col-2"><h5 class="fw-bold"> M{{ bd.bd_no }} {{ bd.bd_name }}</h5></div>
+                        <div class="col-10">
+                            <span class="badge bg-secondary">待下線</span>
+                            <span class="badge bg-warning text-dark">需迭代</span>
+                            <span class="badge bg-info text-dark">保留</span>
+                        </div>  
+                    </div>
+                </div>                
+                {%for vc in vcMap|dict_get:bd.bd_no%}
+                <div class="container border">                   
                     <div class="row border border-top-0 border-end-0 border-start-0">
-                        <div class="col-12 "><a href="/map/processMap?vcno={{vc.vc_no }}" class="card-link">{{vc.vc_name}}</a></div>                                                
-                    </div>                            
-                      
+                        <div class="col-12 fw-bold"><a href="/map/processMap?vcno={{vc.vc_no }}" class="card-link">{{vc.vc_name}}</a></div>                                                
+                    </div>
                     <div class="row border border-top-0 border-end-0 border-start-0">
-                            <div class="col-2 border border-top-0 border-bottom-0 border-start-0">數位用例</div>
-                            <div class="col-10">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col">用例名稱</div>    
-                                        <div class="col">使用狀態</div>                                       
-                                    </div>
-                                    {%for sl in slMap|dict_get:vc.vc_no %}
-                                    <div class="row">
-                                        <div class="col">{{sl.usecase_name}}</div>
-                                        <div class="col">
-                                            {%for rl in rlMap|dict_get:sl.sl_no%}
-                                                {%if not forloop.first%}
-                                                    ,
-                                                {% endif %} 
-                                                {%if rl.current_use_status == "待下線" %}
-                                                    <span class="badge bg-secondary"> {{rl.plant_name}}</span>
-                                                {%elif rl.current_use_status == "需迭代" %}
-                                                    <span class="badge bg-warning text-dark"> {{rl.plant_name}}</span>
-                                                {%else%}
-                                                <span class="badge bg-info text-dark"> {{rl.plant_name}}</span>
-                                                {%endif%}                                               
-                                            {%endfor%}
-                                        </div>   
-                                    </div>   
-                                    {%endfor%}   
-                                </div>   
-                            </div>   
+                        <div class="col fw-bold bg-secondary bg-gradient text-white" style="--bs-bg-opacity: .5;">
+                            數位用例摘要 : 
+                            &nbsp;<span class="text-dark">數量:{{slMap|dict_get:vc.vc_no|length}},</span>
+                            &nbsp;<span class="text-dark">數位化比例:待分析(有數位用例支持業務活動/總業務活動)</span>
+                        </div>
+                    </div>       
+                    <div class="row border border-top-0 border-end-0 border-start-0">
+                        <div class="col fw-bold bg-secondary bg-gradient text-white" style="--bs-bg-opacity: .5;">名稱</div>
+                        <div class="col fw-bold bg-secondary bg-gradient text-white" style="--bs-bg-opacity: .5;">使用狀態</div>
+                    </div>                 
+                    {%for sl in slMap|dict_get:vc.vc_no %}
+                    <div class="row">
+                        <div class="col border">{{sl.usecase_name}}</div>
+                        <div class="col border">
+                            {%for rl in rlMap|dict_get:sl.sl_no%}
+                                {%if not forloop.first%}
+                                    ,
+                                {% endif %} 
+                                {%if rl.current_use_status == "待下線" %}
+                                    <span class="badge bg-secondary"> {{rl.plant_name}}</span>
+                                {%elif rl.current_use_status == "需迭代" %}
+                                    <span class="badge bg-warning text-dark"> {{rl.plant_name}}</span>
+                                {%else%}
+                                <span class="badge bg-info text-dark"> {{rl.plant_name}}</span>
+                                {%endif%}                                               
+                            {%endfor%}
+                        </div>   
                     </div>   
-                    <div class="row border border-top-0 border-end-0 border-start-0">
+                    {%endfor%}  
+                    <!--
+                    <div class="row border  border-end-0 border-start-0">
                         <div class="col-2 border border-top-0 border-bottom-0 border-start-0">Process Chain</div>
                         <div class="col-10">
                             {%for pc in pcMap|dict_get:vc.vc_no%}
@@ -53,9 +62,11 @@
                                 {{pc.pc_name}}
                             {%endfor%}
                         </div>
-                    </div>                    
-                    {%endfor%}     
+                    </div> 
+                    -->    
                 </div>
+                <div>&nbsp;</div>                                    
+                {%endfor%}
             </div>
         </div>
     </div>
