@@ -1,23 +1,24 @@
 {% extends 'base.html' %}
 {% block content %}
-<div style="padding-top:3%">
+<div>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="/map/businessDomainList">Business Domain</a>
+                <a href="/map/businessDomainList">M1~M8</a>
             </li>
-            <li class="breadcrumb-item" aria-current="page">
-                <a href="/map/valuechain?bdno={{selectedVCNo}}">Value Chain</a>
+            <li class="breadcrumb-item" >
+                <a href="/map/valuechain?bdno={{selectBD.bd_no}}">{{selectBD.bd_name}}</a>
             </li>
+            <li class="breadcrumb-item" aria-current="page">{{selectedVC.vc_name}}</li>
         </ol>
     </nav>
-
-    <div class="container " >
+    <div class="container ">
         <div class="row">
+            {%for pc in selectedPCList %}
             <div class="col" >
-                {{pcMap|dict_get:"60101"}}                
+                {{pc.pc_name}}
                 <div class="container">
-                    {%for cp in cbmMap|dict_get:"60101"%}    
+                    {%for cp in cbmMap|dict_get:pc.pc_no%}
                     <div class="row border border-secondary" style="padding:3%">
                         <div class="col-3 border border-secondary">
                             {{cp.cb_type}}
@@ -29,47 +30,12 @@
                             <span class="badge bg-secondary" onClick="showActivity('{{cp.cb_no}}');" style="cursor:pointer;">view</span>
                         </div>  
                     </div>
-                    {% endfor%}
-                </div>  
+                    {%endfor%}
+                </div>
             </div>   
-            <div class="col" >
-                {{pcMap|dict_get:"60102"}}
-                <div class="container">
-                    {%for cp in cbmMap|dict_get:"60102" %}    
-                    <div class="row border border-secondary" style="padding:3%">
-                        <div class="col-3 border border-secondary">
-                            {{cp.cb_type}}
-                        </div>
-                        <div class="col-7 border border-secondary">
-                            {{cp.cb_name}}
-                        </div>  
-                        <div class="col-2 border border-secondary">
-                            <span class="badge bg-secondary" onClick="showActivity('{{cp.cb_no}}');" style="cursor:pointer;">view</span>
-                        </div>   
-                    </div>
-                    {% endfor%}
-                </div>  
-            </div>
-            <div class="col">
-                {{pcMap|dict_get:"60103"}}
-                <div class="container">
-                    {%for cp in cbmMap|dict_get:"60103" %}    
-                    <div class="row border border-secondary" style="padding:3%">
-                        <div class="col-3 border border-secondary">
-                            {{cp.cb_type}}
-                        </div>
-                        <div class="col-7 border border-secondary">
-                            {{cp.cb_name}}
-                        </div>    
-                        <div class="col-2 border border-secondary">
-                            <span class="badge bg-secondary" onClick="showActivity('{{cp.cb_no}}');" style="cursor:pointer;">view</span>
-                        </div> 
-                    </div>
-                    {% endfor%}
-                </div>  
-            </div>
-        </div>   
-    </div>    
+            {%endfor%}
+        </div>
+    </div>
 </div> 
 </div> 
 <!--Modal-->
@@ -125,8 +91,8 @@
             },
             success : function(response){                
                 activityContainer.append('<div class="row"><div class="col">No</div><div class="col">活動名稱</div></div>');
-                bdlist = response.bdlist;          
-                $.each(JSON.parse(bdlist) , function( index, data ) {
+                calist = response.calist;          
+                $.each(JSON.parse(calist) , function( index, data ) {
                      var rowVal = index+1
                     activityContainer.append('<div class="row"><div class="col-2">'+rowVal+'</div><div class="col-8">'+data.fields.ca_name+'</div></div>'); 
                 });

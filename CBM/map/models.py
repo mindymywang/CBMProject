@@ -40,3 +40,28 @@ class Component_Activity(models.Model):
     bd_no = models.CharField(max_length=20, default=None, null=True)
     vc_no = models.CharField(max_length=50, default=None, null=True)
 
+class System_List(models.Model):
+    sl_no = models.BigIntegerField(primary_key=True)
+    system_name=models.CharField(max_length=200, default=None, null=True)
+    system_eng_name=models.CharField(max_length=200, default=None, null=True)
+    usecase_name=models.CharField(max_length=200, default=None, null=True)
+    usecase_eng_name=models.CharField(max_length=200, default=None, null=True)
+    flywheel_no = models.CharField(max_length=200, default=None, null=True)
+    belong_platform = models.CharField(max_length=200, default=None, null=True)
+    is_package = models.CharField(max_length=5,null=True,default=None)
+    cb_no = models.BigIntegerField(default=None, null=True)
+    pc_no = models.CharField(max_length=50, default=None, null=True)
+    bd_no = models.CharField(max_length=20, default=None, null=True)
+    vc_no = models.CharField(max_length=50, default=None, null=True)
+    ca_no = models.BigIntegerField(default=None, null=True)
+
+class  Rollout_Info(models.Model):
+      ri_no =models.BigIntegerField(primary_key=True)
+      plant_name=models.CharField(max_length=50,default=None,null=True)
+      go_live_date = models.DateField(null=True)     
+      current_use_status = models.CharField(max_length=10,default=None,null=True)
+      sl_no = models.BigIntegerField(default=None, null=True)
+
+
+
+

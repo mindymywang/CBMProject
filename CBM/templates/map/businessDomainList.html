@@ -1,12 +1,35 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="row" style=padding:3%>
+<p class="h5" style="padding-top:0%">業務領域</p>
+<div class="row">
     {% for bd in bdlist %}
-    <div class="col-lg-4" style="padding-bottom:1%">
-        <div class="card" style="width: 18rem">           
-            <div class="card-body" style="margin-bottom:1%">
+    <div class="col-lg-12" style="padding-bottom:1%">
+        <div class="card" style="width: 100%">           
+            <div class="card-body">
                 <h5 class="card-title">{{ bd.bd_no }} {{ bd.bd_name }}</h5>
-                <a class="btn btn-primary" href="/map/valuechain?bdno={{ bd.bd_no }}">內容</a>
+                <div class="container">
+                    {%for vc in vcMap|dict_get:bd.bd_no%}
+                    <div class="row">
+                        <div class="col-2"><a href="/map/processMap?vcno={{vc.vc_no }}" class="card-link">{{vc.vc_name}}</a></div>
+                        <div class="col-10">
+                            <div class="container">
+                                <div class="row">
+                                   <div class="col-2">Process Chain</div>
+                                   <div class="col-10">
+                                    {%for pc in pcMap|dict_get:vc.vc_no%}
+                                        {{pc.pc_name}}
+                                    {%endfor%}
+                                   </div>
+                                </div>
+                                <div class="row">
+                                   <div class="col-2">數位用例狀態</div>
+                                   <div class="col-10"></div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>                    
+                    {%endfor%}     
+                </div>
             </div>
         </div>
     </div>
